@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.assignment2.TestCreationFactory.randomLong;
@@ -65,13 +66,13 @@ class BookStoreControllerTest extends BaseControllerTest {
     }
 
     @Test
-    void exportReport() throws Exception {
+    void export() throws Exception {
         when(reportServiceFactory.getReportService(PDF)).thenReturn(pdfReportService);
         when(reportServiceFactory.getReportService(CSV)).thenReturn(csvReportService);
         String pdfResponse = "PDF!";
-        when(pdfReportService.export()).thenReturn(pdfResponse);
+        when(pdfReportService.export()).thenReturn(pdfResponse.getBytes(StandardCharsets.UTF_8));
         String csvResponse = "CSV!";
-        when(csvReportService.export()).thenReturn(csvResponse);
+        when(csvReportService.export()).thenReturn(csvResponse.getBytes(StandardCharsets.UTF_8));
 
         ResultActions pdfExport = mockMvc.perform(get(BOOK_STORE + EXPORT_REPORT, PDF.name()));
         ResultActions csvExport = mockMvc.perform(get(BOOK_STORE + EXPORT_REPORT, CSV.name()));
@@ -131,7 +132,7 @@ class BookStoreControllerTest extends BaseControllerTest {
 
         bookService.delete(bookToDelete.getId());
 
-        ResultActions result = performPostWithRequestBody(BOOK_STORE, bookToDelete);
+        ResultActions result = performDeleteWithRequestBody(BOOK_STORE, bookToDelete);
         result.andExpect(status().isOk());
 
 

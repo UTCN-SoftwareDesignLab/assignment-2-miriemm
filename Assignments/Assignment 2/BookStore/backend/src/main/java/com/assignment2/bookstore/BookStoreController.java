@@ -5,6 +5,7 @@ import com.assignment2.bookstore.model.dto.BookDTO;
 import com.assignment2.report.ReportServiceFactory;
 import com.assignment2.report.ReportType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +38,11 @@ public class BookStoreController {
         bookService.delete(book.getId());
     }
 
-    @GetMapping(UrlMapping.EXPORT_REPORT)
-    public String exportReport(@PathVariable ReportType type) {
+//    @GetMapping(UrlMapping.EXPORT_REPORT)
+    @GetMapping(value = "/export/{type}",
+    produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public @ResponseBody byte[] export(@PathVariable ReportType type) {
+
         return reportServiceFactory.getReportService(type).export();
     }
 
@@ -47,7 +51,7 @@ public class BookStoreController {
         bookService.sellBook(book.getId());
     }
 
-    @RequestMapping("/findByMultipleCriteria/{searchParameter}")
+    @GetMapping("/findByMultipleCriteria/{searchParameter}")
     public List<BookDTO> findByMultipleCriteria(@PathVariable(value="searchParameter") String searchParameter) {
         return bookService.findByMultipleCriteria(searchParameter);
     }

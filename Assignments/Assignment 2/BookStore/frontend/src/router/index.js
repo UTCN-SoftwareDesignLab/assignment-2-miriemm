@@ -5,6 +5,7 @@ import BookList from "../views/BookList.vue";
 import { auth as store } from "../store/auth.module";
 import Login from "../views/Login";
 import BookEmployee from "../views/BookEmployee";
+import Report from "@/views/Report";
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,18 @@ const routes = [
     path: "/books",
     name: "Books",
     component: BookList,
+    beforeEnter: (to, from, next) => {
+      if (store.state.status.loggedIn) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    },
+  },
+  {
+    path: "/reports",
+    name: "Report",
+    component: Report,
     beforeEnter: (to, from, next) => {
       if (store.state.status.loggedIn) {
         next();

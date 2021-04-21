@@ -35,7 +35,10 @@ export default {
     },
     userPage() {
       router.push("/users");
-    }
+    },
+    reportPage(){
+      router.push("/reports")
+    },
   },
 };
 </script>

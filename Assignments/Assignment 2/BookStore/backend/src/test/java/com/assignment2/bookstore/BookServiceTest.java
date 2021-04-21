@@ -25,6 +25,8 @@ class BookServiceTest {
     @Mock
     private BookMapper bookMapper;
 
+
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -39,6 +41,11 @@ class BookServiceTest {
         List<BookDTO> all = bookService.findAll();
 
         Assertions.assertEquals(books.size(), all.size());
+    }
+
+    @Test
+    void findOutOfStockBooks() {
+
     }
 
 }

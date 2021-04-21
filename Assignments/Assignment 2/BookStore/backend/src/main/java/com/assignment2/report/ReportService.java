@@ -1,7 +1,7 @@
 package com.assignment2.report;
 
 public interface ReportService {
-    String export();
+    byte[] export();
 
     ReportType getType();
 }

@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 public abstract class BaseControllerTest {
@@ -39,6 +40,14 @@ public abstract class BaseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
+
+    protected ResultActions performDeleteWithRequestBody(String path, Object body) throws Exception {
+        return mockMvc.perform(delete(path)
+                .content(asJsonString(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
 
     protected String asJsonString(final Object obj) {
         try {

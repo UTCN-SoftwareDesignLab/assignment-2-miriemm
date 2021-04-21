@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,23 +62,28 @@ public class BookService {
 
     }
 
-    static Specification<Book> hasAuthor(String author) {
-        return (book, cq, cb) -> cb.equal(book.get("author"), author);
-    }
-
-    static Specification<Book> titleContains(String title) {
-        return (book, cq, cb) -> cb.like(book.get("title"), "%" + title + "%");
-    }
-
-    static Specification<Book> genreContains(String genre) {
-        return (book, cq, cb) -> cb.like(book.get("genre"), "%" + genre + "%");
-    }
-
     public List<BookDTO> findByMultipleCriteria(String searchParameter){
 
-        return bookRepository.findAll(Specification.where(hasAuthor(searchParameter)).or(titleContains(searchParameter)).or(genreContains(searchParameter))).stream()
+        return bookRepository.findAll(Specification.where(BookSpecifications.hasAuthor(searchParameter)).or(BookSpecifications.titleContains(searchParameter)).or(BookSpecifications.genreContains(searchParameter))).stream()
                 .map(bookMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<BookDTO> findOutOfStockBooks() {
+
+        List<Book> allBooks = bookRepository.findAll();
+
+        List<BookDTO> outOfStockBooks = new ArrayList<>();
+
+        for (Book book : allBooks) {
+            if (book.getQuantity() == 0) {
+                outOfStockBooks.add(bookMapper.toDto(book));
+            }
+        }
+
+        return outOfStockBooks;
+
+
     }
 
 }

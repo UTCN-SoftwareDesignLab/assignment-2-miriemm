@@ -42,5 +42,12 @@ export default {
         }
     );
   },
+    // pdfReport(){
+    //   return HTTP.get(BASE_URL + "/bookstore/export/PDF", { headers: authHeader() }).then(
+    //       (response) => {
+    //           return response.data;
+    //       }
+    //       );
+    // },
 };
 

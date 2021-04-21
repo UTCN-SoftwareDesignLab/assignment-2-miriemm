@@ -14,7 +14,6 @@ export default {
   logout() {
     localStorage.removeItem("user");
   },
-
   register(data) {
     return HTTP.post(BASE_URL + "/auth/sign-up", data);
   },
